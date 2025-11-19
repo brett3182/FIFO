@@ -42,6 +42,8 @@ READ:  addr=13 data=d
 READ:  addr=14 data=e
 READ:  addr=15 data=f
 rempty=1
-```
+
 [413000] FIFO is empty again. Test complete
 READ:  addr=0 data=0
+```
+
