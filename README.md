@@ -14,20 +14,20 @@ A brief explanation of all the design files is summarized below:
 
 **<ins> fifo_top.sv:</ins>** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
 
-**fifo_write.sv:** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
+**<ins>fifo_write.sv:</ins>** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
 
-**fifo_read.sv:** It contains the read clock domain logic - increments the read pointer, makes the read address, and raises empty and almost_empty flags based on the synced write pointer.
+**<ins>fifo_read.sv:</ins>** It contains the read clock domain logic - increments the read pointer, makes the read address, and raises empty and almost_empty flags based on the synced write pointer.
 
-**fifo_sync_r2w.sv:** Two flip-flop synchronizer to bring the read Gray pointer safely into the write clock domain.
+**<ins>fifo_sync_r2w.sv:</ins>** Two flip-flop synchronizer to bring the read Gray pointer safely into the write clock domain.
 
-**fifo_sync_w2r.sv:** Two flip-flop synchronizer to bring the write Gray pointer safely into the read clock domain.
+**<ins>fifo_sync_w2r.sv:</ins>** Two flip-flop synchronizer to bring the write Gray pointer safely into the read clock domain.
 
-**fifo_memory.sv:** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
+**<ins>fifo_memory.sv:</ins>** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
 
 
 ### Design Verification using SystemVerilog Testbench
 
-**1) Write then Read (tb_fifo_write_then_read.sv):** This part is basically "Fill it, then drain it". It is testing that the FIFO correctly fills from empty to full under a faster write clock, asserts walmost_full near 3/4th depth and wfull at capacity, then drains back to empty in order with ralmost_empty and rempty asserting at the tail.
+**<ins>1) Write then Read (tb_fifo_write_then_read.sv):</ins>** This part is basically "Fill it, then drain it". It is testing that the FIFO correctly fills from empty to full under a faster write clock, asserts walmost_full near 3/4th depth and wfull at capacity, then drains back to empty in order with ralmost_empty and rempty asserting at the tail.
 
 **Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
 
@@ -86,7 +86,7 @@ READ:  addr=0 data=0
 ```
 
 
-**2) Simultaneous read and write operation (tb_simultaneous_write_read.sv):** This testbenches tests the design for reads and writes at the same time. Overall, it tests that with both sides active under independent clocks, the FIFO still preserves order, wraps cleanly in the address space, and raises the “almost” and “full/empty” flags at the right times.
+**<ins>2) Simultaneous read and write operation (tb_simultaneous_write_read.sv):</ins>** This testbenches tests the design for reads and writes at the same time. Overall, it tests that with both sides active under independent clocks, the FIFO still preserves order, wraps cleanly in the address space, and raises the “almost” and “full/empty” flags at the right times.
 
 **Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
 
