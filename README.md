@@ -8,13 +8,20 @@ This part of the project implements and verifies a parameterized asynchronous FI
 
 All the files used in this design are available at https://github.com/brett3182/FIFO/tree/main/Part%201%3A%20Asynchronous%20FIFO 
 
+The files have been commented well enough to understand whats happening.
+
 A brief explanation of all the design files is summarized below:
 
 **fifo_top.sv:** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
+
 **fifo_write.sv:** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
+
 **fifo_read.sv:** It contains the read clock domain logic - increments the read pointer, makes the read address, and raises empty and almost_empty flags based on the synced write pointer.
+
 **fifo_sync_r2w.sv:** Two flip-flop synchronizer to bring the read Gray pointer safely into the write clock domain.
+
 **fifo_sync_w2r.sv:** Two flip-flop synchronizer to bring the write Gray pointer safely into the read clock domain.
+
 **fifo_memory.sv:** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
 
 
