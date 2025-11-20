@@ -25,6 +25,14 @@ A brief explanation of all the design files is summarized below:
 **fifo_memory.sv:** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
 
 
+### Design Verification using SystemVerilog Testbench
+
+**1) Write then Read (tb_fifo_write_then_read.sv):** This part is basically "Fill it, then drain it". It is testing that the FIFO correctly fills from empty to full under a faster write clock, asserts walmost_full near 3/4th depth and wfull at capacity, then drains back to empty in order with ralmost_empty and rempty asserting at the tail.
+
+**Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
+
+
+
 First simulation:
 
 ```
