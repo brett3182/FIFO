@@ -12,7 +12,7 @@ The files have been commented well enough to understand whats happening.
 
 A brief explanation of all the design files is summarized below:
 
-**fifo_top.sv:** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
+**<ins> fifo_top.sv:</ins>** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
 
 **fifo_write.sv:** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
 
