@@ -18,9 +18,9 @@ A brief explanation of all the design files is summarized below:
 
 **<ins>fifo_read.sv:</ins>** It contains the read clock domain logic - increments the read pointer, makes the read address, and raises empty and almost_empty flags based on the synced write pointer.
 
-**<ins>fifo_sync_r2w.sv:</ins>** Two flip-flop synchronizer to bring the read Gray pointer safely into the write clock domain.
+**<ins>fifo_sync_r2w.sv:</ins>** Two flip-flop synchronizer to bring the read gray pointer safely into the write clock domain.
 
-**<ins>fifo_sync_w2r.sv:</ins>** Two flip-flop synchronizer to bring the write Gray pointer safely into the read clock domain.
+**<ins>fifo_sync_w2r.sv:</ins>** Two flip-flop synchronizer to bring the write gray pointer safely into the read clock domain.
 
 **<ins>fifo_memory.sv:</ins>** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
 
