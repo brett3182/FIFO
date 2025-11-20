@@ -29,7 +29,7 @@ A brief explanation of all the design files is summarized below:
 
 **<ins>1) Write then Read (tb_fifo_write_then_read.sv):</ins>** This part is basically "Fill it, then drain it". It is testing that the FIFO correctly fills from empty to full under a faster write clock, asserts walmost_full near 3/4th depth and wfull at capacity, then drains back to empty in order with ralmost_empty and rempty asserting at the tail.
 
-**Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
+**Output Waves:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
 
 
 ![image alt](https://github.com/brett3182/FIFO/blob/main/images/1.png?raw=true)
@@ -88,7 +88,7 @@ READ:  addr=0 data=0
 
 **<ins>2) Simultaneous read and write operation (tb_simultaneous_write_read.sv):</ins>** This testbenches tests the design for reads and writes at the same time. Overall, it tests that with both sides active under independent clocks, the FIFO still preserves order, wraps cleanly in the address space, and raises the “almost” and “full/empty” flags at the right times.
 
-**Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
+**Output Waves:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
 
 
 ![image alt](https://github.com/brett3182/FIFO/blob/main/images/2.png?raw=true)
