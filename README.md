@@ -6,6 +6,18 @@
 This part of the project implements and verifies a parameterized asynchronous FIFO in SystemVerilog. Asynchronous means the write and read sides use independent clocks. The default configuration stores 8-bit words with a logical depth of 16 entries, but both width and depth are parameters that we can change without touching the internals. The design follows the standard, proven approach of using Gray-code pointers so only one bit changes per increment, two-flip-flop synchronizers when a pointer crosses into the other clock domain, and Moore-style status flags indicating full, empty, and the 1/4th and 3/4th thresholds that are registered in their local domains. Because the flags depend on a pointer that has crossed a clock boundary and then been registered, their changes lag real pushes and pops by a few cycles of the observing clock. That small, predictable latency is expected and is exactly what keeps the FIFO robust against metastability and mis-sampling.
 
 
+All the files used in this design are available at https://github.com/brett3182/FIFO/tree/main/Part%201%3A%20Asynchronous%20FIFO 
+
+A brief explanation of all the design files is summarized below:
+
+**fifo_top.sv:** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
+**fifo_write.sv:** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
+**fifo_read.sv:** It contains the read clock domain logic - increments the read pointer, makes the read address, and raises empty and almost_empty flags based on the synced write pointer.
+**fifo_sync_r2w.sv:** Two flip-flop synchronizer to bring the read Gray pointer safely into the write clock domain.
+**fifo_sync_w2r.sv:** Two flip-flop synchronizer to bring the write Gray pointer safely into the read clock domain.
+**fifo_memory.sv:** It is the storage array whcih does synchronous writes on wclk, simple async read via raddr.
+
+
 First simulation:
 
 ```
