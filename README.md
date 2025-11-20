@@ -32,8 +32,13 @@ A brief explanation of all the design files is summarized below:
 **Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
 
 
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/1.png?raw=true)
 
-First simulation:
+
+In this 'write until full then read until empty testbench', the FIFO starts empty where can we see that the rempty and almost empty flags are set 1. The writer pushes an incrementing pattern from 0 until F on every positive edge of write clock until the FIFO reaches its full capacity afterwhich wfull is asserted and our test switches to read. Now, the FIFO pops out everything on the positive edge of read clock until the FIFO is empty again. Notice how rempty and ralmost_empty stay high through the early writes and only drop after several items have been pushed. This is the expected because of the 2 flip flop latency in the read domain. The write pointer must synchronize across, costing ~2–3 rclk cycles. Likewise, after reads begin, wfull doesn’t clear immediately, it deasserts a few wclk cycles later once the read pointer has synchronized into the write domain. Because the write clock is faster than the read clock, these CDC latencies show up as “several items” on waves, but all flags and data ordering behave exactly as designed.
+
+
+***Simulation log*** 
 
 ```
 wfull=0
@@ -79,6 +84,14 @@ rempty=1
 [413000] FIFO is empty again. Test complete
 READ:  addr=0 data=0
 ```
+
+
+
+
+
+
+
+
 
 Second simulation:
 ```
