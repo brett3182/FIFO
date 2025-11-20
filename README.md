@@ -35,7 +35,7 @@ A brief explanation of all the design files is summarized below:
 ![image alt](https://github.com/brett3182/FIFO/blob/main/images/1.png?raw=true)
 
 
-In this 'write until full then read until empty testbench', the FIFO starts empty where can we see that the rempty and almost empty flags are set 1. The writer pushes an incrementing pattern from 0 until F on every positive edge of write clock until the FIFO reaches its full capacity afterwhich wfull is asserted and our test switches to read. Now, the FIFO pops out everything on the positive edge of read clock until the FIFO is empty again. Notice how rempty and ralmost_empty stay high through the early writes and only drop after several items have been pushed. This is the expected because of the 2 flip flop latency in the read domain. The write pointer must synchronize across, costing ~2–3 rclk cycles. Likewise, after reads begin, wfull doesn’t clear immediately, it deasserts a few wclk cycles later once the read pointer has synchronized into the write domain. Because the write clock is faster than the read clock, these CDC latencies show up as “several items” on waves, but all flags and data ordering behave exactly as designed.
+In this 'write until full then read until empty testbench', the FIFO starts empty where can we see that the rempty and almost empty flags are set to logic 1. The writer pushes an incrementing pattern from 0 until F on every positive edge of write clock until the FIFO reaches its full capacity afterwhich wfull is asserted and our test switches to read. Now, the FIFO pops out everything on the positive edge of read clock until the FIFO is empty again. Notice how rempty and ralmost_empty stay high through the early writes and only drop after several items have been pushed. This is the expected because of the 2 flip flop latency in the read domain. The write pointer must synchronize across, costing ~2–3 rclk cycles. Likewise, after reads begin, wfull doesn’t clear immediately, it deasserts a few wclk cycles later once the read pointer has synchronized into the write domain. Because the write clock is faster than the read clock, these CDC latencies show up as “several items” on waves, but all flags and data ordering behave exactly as designed.
 
 
 ***Simulation log*** 
@@ -86,14 +86,19 @@ READ:  addr=0 data=0
 ```
 
 
+**2) Simultaneous read and write operation (tb_simultaneous_write_read.sv):** This testbenches tests the design for reads and writes at the same time. Overall, it tests that with both sides active under independent clocks, the FIFO still preserves order, wraps cleanly in the address space, and raises the “almost” and “full/empty” flags at the right times.
+
+**Output:** *The design was compiled and simulated using Synopsys VCS and Synopsys Verdi*
+
+
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/2.png?raw=true)
+
+
+In this testbench we write and read simultaneously. We started empty where we can see both empty flags high, then enabled read and write together with independent clocks where write (100MHz) is faster than read (66.7 MHz). As data flowed, the addresses wrapped naturally ....14, 15, 0, 1..... and the read stream preserved order. The FIFO occupancy climbed despite concurrent pops, so walmost_full asserted first and later wfull went high; after hitting full we stopped writes, kept reading, and the FIFO drained back to empty, with ralmost_empty and then rempty asserting at the end. Because the write side and read side use different clocks, each side only sees the other side’s pointer after it passes through the two-flip-flop synchronizer. That adds a few local cycles of delay. Also, our flags are Moore style, so they only update on a clock edge, which adds another beat of delay. Put together, this is why we see walmost_full first, then wfull, and why wfull drops a few write clocks after reads start. The extra “READ” line right when rempty goes high is just a print timing thing, $strobe prints at the end of the same timestep the FIFO becomes empty, so it logs the last valid pop and then we see rempty=1. Overall, the lag and that final print are expected and correct.
 
 
 
-
-
-
-
-Second simulation:
+***Simulation log*** 
 ```
 *Verdi* : Create FSDB file 'novas.fsdb'
 *Verdi* : Begin traversing the scopes, layer (0).
