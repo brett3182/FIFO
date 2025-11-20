@@ -12,7 +12,7 @@ The files have been commented well enough to understand whats happening.
 
 A brief explanation of all the design files is summarized below:
 
-<u> **fifo_top.sv:** </u> The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
+**fifo_top.sv:** The top module wires up write side, read side, the two synchronizers, and the memory. Exposes the FIFO ports and flags.
 
 **fifo_write.sv:** It contains the write clock domain logic -  increments the write pointer, makes the write address, and raises the full and almost_full flags based on the synced read pointer.
 
@@ -183,3 +183,26 @@ $finish at simulation time               542500
 Time: 542500 ps
 CPU Time:      0.220 seconds;       Data structure size:   0.0Mb
 ```
+
+
+### Synthesis
+
+Synthesis was run in Synopsys Design Compiler (dc_shell) using a short Tcl script to read the RTL, elaborate the top, set clock constraints, and produce timing, area, and power reports. Two independent clocks were constrained to aggressive targets of 1.6 GHz for the write domain and 0.8 GHz for the read domain to stress timing and reveal headroom. The domains were treated as asynchronous so only paths within each domain were optimized, consistent with the FIFO architecture. Under these targets the design compiled cleanly, with the expected trade-off of tighter timing driving larger cells and higher area.
+
+
+**Power report:**
+
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/3.png?raw=true)
+
+
+**Area report:** 
+
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/4.png?raw=true)
+
+**Timing report:**
+
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/5.png?raw=true)
+
+**Cell report:** *Design synthesized using different standard cells from the standard cell library of a 45nm PDK*
+
+![image alt](https://github.com/brett3182/FIFO/blob/main/images/6.png?raw=true)
