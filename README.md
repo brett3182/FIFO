@@ -2,6 +2,10 @@
 
 
 ## Part 1: Asynchronous FIFO design and testbench development
+
+This part of the project implements and verifies a parameterized asynchronous FIFO in SystemVerilog. Asynchronous means the write and read sides use independent clocks. The default configuration stores 8-bit words with a logical depth of 16 entries, but both width and depth are parameters that we can change without touching the internals. The design follows the standard, proven approach of using Gray-code pointers so only one bit changes per increment, two-flip-flop synchronizers when a pointer crosses into the other clock domain, and Moore-style status flags indicating full, empty, and the 1/4th and 3/4th thresholds that are registered in their local domains. Because the flags depend on a pointer that has crossed a clock boundary and then been registered, their changes lag real pushes and pops by a few cycles of the observing clock. That small, predictable latency is expected and is exactly what keeps the FIFO robust against metastability and mis-sampling.
+
+
 First simulation:
 
 ```
